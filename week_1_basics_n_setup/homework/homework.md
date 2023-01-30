@@ -80,7 +80,7 @@ from
 where 
     cast(tpep_pickup_datetime as date)= '2019-01-01'
 group by passenger_count
-having passenger_count <=3
+having passenger_count > 1 and passenger_count <=3
 
 
 6. For the passengers picked up in the Astoria Zone which was the drop off zone that had the largest trip? We want the name of the zone, not the id.
@@ -95,16 +95,16 @@ Answer: Long Island City/Queens Plaza
 
 select
     t.tip_amount,
-    pul."Zone" as pickup,
-    dul."Zone" as dropoff
+    z1."Zone" as pickup,
+    z2."Zone" as dropoff
 from
     green_taxi_trips t,
-    zones pul,
-    zones dul
+    zones z1,
+    zones z2
 where 
-    t."PULocationID" = pul."LocationID"
+    t."PULocationID" = z1."LocationID"
     and
-    t."DOLocationID" = dul."LocationID"
+    t."DOLocationID" = z2."LocationID"
     and
     pul."Zone" like "Astoria"
 order by
